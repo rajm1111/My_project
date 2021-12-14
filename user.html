@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+
+  <script>
+  function pre(){
+    var em = localStorage.getItem("email");
+    var obj = JSON.parse(localStorage.getItem('formData'));
+    var x;
+    for(let i =0; i<obj.length; i++){
+      if(em!=obj[i].mail){
+        x=0;
+      }
+      else{
+        x=1;
+        break;
+      }
+    }
+    if(x==0){
+      location.replace("login.html");
+    }
+    console.log(obj);
+    var str="";
+    var str2 = " Hi ";
+    var ind;
+    var count=0;
+    for(let i = 0; i<obj.length; i++){
+      if(obj[i].mail==em){
+        ind = i;
+        continue;
+      } 
+      else{
+        count++;
+        str = str + '<tr><th scope="row">' + count + '</th>';
+        for(let key in obj[i]){
+         if(key=="pwd"){
+          continue;
+          }
+          str = str + '<td>' + obj[i][key] + '</td>';
+        }
+        str = str + '</tr>';
+      }
+    }
+    document.getElementById('content').innerHTML = str;
+    document.getElementById('repl').innerHTML = `Hi ${obj[ind].nme} <br> your Emaild id is : ${obj[ind].mail} <br> your contact number is : ${obj[ind].mob} <hr> <hr> <h3> People you may Know</h3>`;
+  }
+  function subm(){
+    var em = localStorage.getItem("email");
+    var obj = JSON.parse(localStorage.getItem('formData'));
+    var ind;
+    var mail = document.getElementById("Nmail").value;
+    var nme = document.getElementById('name').value;
+    var mob = document.getElementById('phn').value;
+    var pwd = document.getElementById('pass').value;
+    for(let i = 0; i<obj.length; i++){
+      if(em==obj[i].mail){
+        ind=i;
+        break;
+      }
+    }
+    obj.push({nme,mail,mob, pwd});
+    obj.splice(ind,1);
+    localStorage.setItem('formData',JSON.stringify(obj));
+    console.log(getItem('formData'));
+    localStorage.setItem('email',mail);
+  }
+  function log(){
+    window.location.href='login.html';
+    localStorage.removeItem('email');
+  }
+</script>
+
+
+  <title>My Layout</title>
+  </head>
+  <body onload="pre()">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="#">Project</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">About</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false">
+          Services
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="anime.html">animations</a>
+          <a class="dropdown-item" href="rotation.html">Rotations</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#">Our Connections</a>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link">Contact Us</a>
+      </li>
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search This Webesite" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      <button type="button" class="btn btn-primary btn-lg" style="margin-left: 50px;" onclick="log()">Log out</button>
+    </form>
+  </div>
+</nav>
+
+
+
+
+
+
+<form>
+  <div class="form-group">
+     <fieldset>
+    <legend>Edit Details</legend>
+    <label for="Nmail">New Email address</label>
+    <input type="email" class="form-control" id="Nmail" placeholder="name@example.com">
+  </div>
+
+  <div class="form-group">
+    <label for="name">New Name</label>
+    <input type="text" id="name" class="form-control" rows="3"></textarea>
+  </div>
+
+  <div class="form-group">
+    <label for="phn">New Phone Number</label>
+    <input type="text" id="phn" class="form-control" rows="3"></textarea>
+  </div>
+  <div class="form-group">
+    <label for="pass">New Password</label>
+    <input type="text" id="pass" class="form-control" rows="3"></textarea>
+  </div>
+<button type="button" class="btn btn-primary btn-lg" onclick="subm()">Save Changes</button>
+</fieldset>
+</form>
+
+
+
+<h4 id="repl"><h4> 
+    <table class="table table-dark" style="margin-top: 100px;">
+  <thead>
+    <tr>
+      <th scope="col">Sr no.</th>
+      <th scope="col">Name</th>
+      <th scope="col">Email</th>
+      <th scope="col">Mobile No.</th>
+    </tr>
+  </thead>
+  <tbody id='content'>
+    
+  </tbody>
+</table>
